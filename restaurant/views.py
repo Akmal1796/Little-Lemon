@@ -7,6 +7,17 @@ from .models import Booking
 from datetime import datetime
 import json
 from django.views.decorators.csrf import csrf_exempt
+from rest_framework import viewsets
+from .models import Booking, Menu
+from .serializers import BookingSerializer, MenuSerializer
+
+class BookingViewSet(viewsets.ModelViewSet):
+    queryset = Booking.objects.all()
+    serializer_class = BookingSerializer
+
+class MenuViewSet(viewsets.ModelViewSet):
+    queryset = Menu.objects.all()
+    serializer_class = MenuSerializer
 
 # Create your views here.
 def home(request):
