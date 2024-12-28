@@ -1,0 +1,73 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<section>
+  <article>
+    <h1>All Reservations</h1>
+    <!--Begin row-->
+    <div class="row">
+      <!--Begin col-->
+      <div class="column">
+        <div id="bookings"></div>
+      </div>
+      <!--End col-->
+
+      <!--Begin col-->
+      <div class="column">
+        <div class="videowrap">
+          <iframe
+            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d11898.289517452584!2d-87.60853049433447!3d41.79442860243028!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x880e2912ce6f7027%3A0xc0cfb5545d4a37b2!2sHyde%20Park%2C%20Chicago%2C%20IL%2C%20USA!5e0!3m2!1sen!2spt!4v1662384760663!5m2!1sen!2spt"
+            width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy"
+            referrerpolicy="no-referrer-when-downgrade"></iframe>
+        </div>
+      </div>
+      <!--End col-->
+    </div>
+    <!--End row-->
+  </article>
+</section>
+<script>
+  const bookings = JSON.parse('{{ bookings|safe }}');
+  console.log(bookings);
+
+  // Prepare a user-friendly HTML table
+  let htmlContent = `
+    <table border="1" cellpadding="5" cellspacing="0">
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Reservation Date</th>
+          <th>Reservation Time</th>
+        </tr>
+      </thead>
+      <tbody>
+  `;
+
+  bookings.forEach(item => {
+    const fields = item.fields;
+    const formattedTime = formatTime(fields.reservation_slot);
+    htmlContent += `
+      <tr>
+        <td>${fields.first_name}</td>
+        <td>${fields.reservation_date}</td>
+        <td>${formattedTime}</td>
+      </tr>
+    `;
+  });
+
+  htmlContent += `
+      </tbody>
+    </table>
+  `;
+
+  // Display the table in the #bookings div
+  document.getElementById('bookings').innerHTML = htmlContent;
+
+  function formatTime(slot) {
+    const ampm = slot < 12 ? 'AM' : 'PM';
+    const hour = slot <= 12 ? slot : slot - 12;
+    return `${hour} ${ampm}`;
+  }
+</script>
+{% endblock %}
