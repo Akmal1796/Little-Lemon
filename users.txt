@@ -1,0 +1,4 @@
+Admin
+    username: Admin
+    email: admin@littlelemon.com
+    p/w: Qrst1234#
